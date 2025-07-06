@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Track Route - Route Tracker{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Map Container -->
+    <div id="map" class="tracking-map"></div>
+    
+    <!-- Tracking Controls -->
+    <div class="tracking-controls">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="controls-card">
+                        <!-- Status Display -->
+                        <div class="status-section">
+                            <div class="status-indicator" id="status-indicator">
+                                <i class="fas fa-circle"></i>
+                                <span id="status-text">Ready to Track</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Route Info -->
+                        <div class="route-info" id="route-info" style="display: none;">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <div class="info-item">
+                                        <div class="info-value" id="distance-value">0.0</div>
+                                        <div class="info-label">km</div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="info-item">
+                                        <div class="info-value" id="time-value">00:00</div>
+                                        <div class="info-label">time</div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="info-item">
+                                        <div class="info-value" id="speed-value">0.0</div>
+                                        <div class="info-label">km/h</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Control Buttons -->
+                        <div class="control-buttons">
+                            <button id="start-btn" class="btn btn-success btn-lg">
+                                <i class="fas fa-play me-2"></i>Start Tracking
+                            </button>
+                            <button id="stop-btn" class="btn btn-danger btn-lg" style="display: none;">
+                                <i class="fas fa-stop me-2"></i>Stop Tracking
+                            </button>
+                            <button id="pause-btn" class="btn btn-warning btn-lg" style="display: none;">
+                                <i class="fas fa-pause me-2"></i>Pause
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Location Permission Modal -->
+    <div class="modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-map-marker-alt me-2"></i>Location Access
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <p>To track your route, we need access to your location. Please allow location access when prompted.</p>
+                    <div class="text-center">
+                        <i class="fas fa-mobile-alt fa-3x text-primary mb-3"></i>
+                        <p class="text-muted">This app works best with location services enabled.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="enable-location">
+                        <i class="fas fa-check me-2"></i>Enable Location
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Route Name Modal -->
+    <div class="modal fade" id="routeNameModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-route me-2"></i>Name Your Route
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="route-name" class="form-label">Route Name</label>
+                        <input type="text" class="form-control" id="route-name" 
+                               placeholder="Enter route name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="route-description" class="form-label">Description (optional)</label>
+                        <textarea class="form-control" id="route-description" rows="3"
+                                  placeholder="Describe your route..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirm-start">
+                        <i class="fas fa-play me-2"></i>Start Tracking
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/tracking.js') }}"></script>
+<script>
+    // Initialize tracking when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        // TrackingApp is already initialized when the script loads
+        
+        // Check if there's an active route
+        {% if active_route %}
+            window.activeRoute = {{ active_route.id }};
+            // Resume tracking for active route - wait a bit for the app to be ready
+            setTimeout(() => {
+                if (window.TrackingApp && window.TrackingApp.resumeActiveRoute) {
+                    window.TrackingApp.resumeActiveRoute();
+                }
+            }, 100);
+        {% endif %}
+    });
+</script>
+{% endblock %}

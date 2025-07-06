@@ -1,0 +1,56 @@
+{
+  "name": "Route Tracker",
+  "short_name": "RouteTracker",
+  "description": "Live route tracking app for travelers",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#007bff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "navigation", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "id": "com.routetracker.app",
+  "shortcuts": [
+    {
+      "name": "Start Tracking",
+      "short_name": "Track",
+      "description": "Start tracking a new route",
+      "url": "/track",
+      "icons": [
+        {
+          "src": "/static/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "My Routes",
+      "short_name": "Routes",
+      "description": "View saved routes",
+      "url": "/routes",
+      "icons": [
+        {
+          "src": "/static/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

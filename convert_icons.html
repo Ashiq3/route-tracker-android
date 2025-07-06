@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Converter</title>
+</head>
+<body>
+    <h2>Icon Converter - Right-click and "Save image as" to get PNG files</h2>
+    
+    <h3>192x192 Icon:</h3>
+    <canvas id="canvas192" width="192" height="192"></canvas>
+    <br><br>
+    
+    <h3>512x512 Icon:</h3>
+    <canvas id="canvas512" width="512" height="512"></canvas>
+
+    <script>
+        // Convert SVG to PNG for 192x192
+        const svg192 = `<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#007bff;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#0056b3;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <rect width="192" height="192" rx="24" fill="url(#grad1)"/>
+          <g transform="translate(48, 48)">
+            <path d="M48 8C21.5 8 0 29.5 0 56s21.5 48 48 48 48-21.5 48-48S74.5 8 48 8zm0 8c22.1 0 40 17.9 40 40s-17.9 40-40 40S8 78.1 8 56s17.9-40 40-40z" fill="white"/>
+            <circle cx="24" cy="32" r="6" fill="white"/>
+            <circle cx="72" cy="32" r="6" fill="white"/>
+            <circle cx="48" cy="80" r="6" fill="white"/>
+            <path d="M24 32 L48 80 L72 32" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M30 38 Q48 50 66 38" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </g>
+        </svg>`;
+
+        // Convert SVG to PNG for 512x512
+        const svg512 = `<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#007bff;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#0056b3;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <rect width="512" height="512" rx="64" fill="url(#grad2)"/>
+          <g transform="translate(128, 128)">
+            <path d="M128 32C86 32 52 66 52 108s34 76 76 76 76-34 76-76-34-76-76-76zm0 16c33.1 0 60 26.9 60 60s-26.9 60-60 60-60-26.9-60-60 26.9-60 60-60z" fill="white"/>
+            <circle cx="64" cy="80" r="12" fill="white"/>
+            <circle cx="192" cy="80" r="12" fill="white"/>
+            <circle cx="128" cy="200" r="12" fill="white"/>
+            <path d="M64 80 L128 200 L192 80" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M80 92 Q128 116 176 92" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M96 104 Q128 120 160 104" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </g>
+        </svg>`;
+
+        function drawSVG(svgString, canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0);
+            };
+            
+            const blob = new Blob([svgString], {type: 'image/svg+xml'});
+            const url = URL.createObjectURL(blob);
+            img.src = url;
+        }
+
+        drawSVG(svg192, 'canvas192');
+        drawSVG(svg512, 'canvas512');
+    </script>
+    
+    <p><strong>Instructions:</strong></p>
+    <ol>
+        <li>Right-click on each canvas above</li>
+        <li>Select "Save image as..."</li>
+        <li>Save as "icon-192.png" and "icon-512.png" respectively</li>
+        <li>Move the PNG files to the static/icons/ folder</li>
+    </ol>
+</body>
+</html>

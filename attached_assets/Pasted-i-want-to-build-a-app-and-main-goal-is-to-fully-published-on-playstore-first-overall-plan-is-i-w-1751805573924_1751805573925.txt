@@ -1,0 +1,307 @@
+i want to build a app. and main goal is to fully published on playstore first.
+
+overall plan is, i want to build a travelers live route tracking app where main feature is showing the route marking in live map.
+
+my app features are:
+
+1. most important feature that i want as possible done. user can see there live route on the livetrack section on the app. and that section have, live map preview, and most important thing that i want is that, while showing live route also when user pass all the path after click the start route track button then from that moment all the route that user travel or pass or go though that will marked on the live map or create a another copy where user can see that result after stopping the trackmyroute button  or stop tracking button.
+
+2. group feature, where people join in a group which build or created by the tour organizer or tour guide. where the host person can see all the group member live location in a map and also showing there profile logo into the map (showing live map preview). 
+
+3. individual account feature: user can get the group notification.  checklist because they can confirm that does they missing any important thing to pack for the tour.
+
+
+
+first understand very deeply because i want you to create me a .md file for me which i give to the cursor ai.
+
+ oh and ask my as many question as you want for your better result provide.
+
+rem
+
+
+
+
+
+Technical Questions:
+
+
+
+Platform & Technology Stack:
+
+
+
+Do you want to build a native Android app (Java/Kotlin) or use a cross-platform framework (Flutter/React Native)?
+
+ans: i dont have any experience. i am using cursor ai as vibe coding. if need get a help from my developer friend so i want the easiest way to build this. but yes i want crossplatform and if possible using react native.
+
+
+
+Do you have any preference for the backend technology (Firebase, AWS, custom server)?
+
+ans: not sure which one is the best for me
+
+
+
+What's your experience level with mobile app development?
+
+ans: zero experience
+
+
+
+Map Integration:
+
+
+
+Which map service do you prefer (Google Maps, Mapbox, OpenStreetMap)?
+
+ans: i want initially open source map or free provider. i dont know that google map offer free or not. but openstreetmap offer free.
+
+
+
+Do you need offline map functionality?
+
+ans: if its not that difficult then why not
+
+
+
+Should the route tracking work in background when the app is minimized?
+
+ans: yes obviously
+
+
+
+Feature-Specific Questions:
+
+
+
+Live Route Tracking (Feature 1):
+
+
+
+How frequently should the location be updated (every second, 5 seconds, etc.)?
+
+ans: every 10 or 15 or 20 (intially based on the the complexity to implement)
+
+
+
+Should users be able to save multiple routes?
+
+ans: yes
+
+
+
+Do you want route statistics (distance traveled, time taken, average speed)?
+
+ans: yes yes
+
+
+
+Should users be able to share their completed routes with others?
+
+ans: yes
+
+
+
+Do you need waypoint markers or just continuous line drawing?
+
+ans: my first thought is live drawing. but now you mentioned that if it can be easily implementable then why not
+
+
+
+Group Feature (Feature 2):
+
+
+
+Maximum number of members per group?
+
+ans: no limit
+
+Should group members see each other's routes or just current locations?
+
+ans: current location
+
+
+
+Can there be multiple tour guides/hosts per group?
+
+ans: yes
+
+
+
+Group privacy settings (public/private groups)?
+
+ans: private (but host can make it public)
+
+
+
+Group chat functionality needed?
+
+ans: yes but not now. i think it maybe complicated to implement but not sure this is just my thoughts. but what you think ? if it can be easily apply then its a game changing for me
+
+
+
+How long should groups persist (auto-delete after tour ends)?
+
+ans: no auto delete.
+
+
+
+User Account & Checklist (Feature 3):
+
+
+
+What type of notifications (route started/stopped, member joined, checklist reminders)?
+
+ans: user can see the type of notification option in there settings.
+
+
+
+Should checklists be customizable or pre-defined templates?
+
+ans: yes, ovbiously customizable
+
+
+
+User authentication method (email/password, Google sign-in, phone number)?
+
+ans: i want to implement every option: email/password, Google sign-in, phone number
+
+but i think i cannot do this right now. so just go for the easiest applicable option from them 
+
+
+
+User profile information needed (name, photo, contact info)?
+
+ans: yes
+
+
+
+Business & Monetization Questions:
+
+
+
+App Monetization:
+
+
+
+Free app with ads, paid app, or freemium model?
+
+ans: decided yet. but suggest me in under this option.
+
+
+
+Any premium features planned?
+
+ans: i will decide later.
+
+
+
+In-app purchases?
+
+ans: yes but i will choose this later
+
+Data & Privacy:
+
+
+
+How long should location data be stored?
+
+ans: not sure but its important for all the traveler so you know better.
+
+
+
+Privacy controls for users (hide location, go offline)?
+
+ans: yes but not when travel with under a group.
+
+
+
+GDPR/privacy policy considerations?
+
+ans: no idea
+
+
+
+Development Timeline & Resources:
+
+
+
+Project Scope:
+
+Do you want an MVP (Minimum Viable Product) first or full-featured app?
+
+ans: which one you prefer ? go for that one
+
+
+
+Timeline expectations?
+
+ans: i let you choose this
+
+
+
+Budget constraints?
+
+ans: as low as possible
+
+
+
+Will you be developing alone or with a team?
+
+try to do this alone. but if i am stuck i may can take a help from friend.
+
+
+
+Additional Considerations:
+
+
+
+Other Features:
+
+
+
+Emergency SOS feature?
+
+ans: yes
+
+
+
+Photo/video attachment to routes?
+
+ans: yes but initially not. because i dont want to make the app big initially. i want to see that allt he core feature are really working or not.
+
+
+
+Weather information integration?
+
+Points of interest (POI) along routes?
+
+ans: dont know what are you talking about. so i will let you choose
+
+
+
+Social features (follow other travelers, share routes)?
+
+ans: yes
+
+
+
+Performance & Testing:
+
+
+
+Target Android versions (minimum SDK)?
+
+ans: best suitable
+
+
+
+Device compatibility requirements?
+
+ans: decide yourself
+
+
+
+Beta testing plans?
+
+ans: maybe yes. because i am planning and trying to build this myself using. so need to test this first.

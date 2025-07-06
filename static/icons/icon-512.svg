@@ -1,0 +1,19 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#007bff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0056b3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="64" fill="url(#grad1)"/>
+  <g transform="translate(128, 128)">
+    <!-- Route icon -->
+    <path d="M128 32C86 32 52 66 52 108s34 76 76 76 76-34 76-76-34-76-76-76zm0 16c33.1 0 60 26.9 60 60s-26.9 60-60 60-60-26.9-60-60 26.9-60 60-60z" fill="white"/>
+    <circle cx="64" cy="80" r="12" fill="white"/>
+    <circle cx="192" cy="80" r="12" fill="white"/>
+    <circle cx="128" cy="200" r="12" fill="white"/>
+    <path d="M64 80 L128 200 L192 80" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M80 92 Q128 116 176 92" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M96 104 Q128 120 160 104" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

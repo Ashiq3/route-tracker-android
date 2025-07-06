@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block title %}My Routes - Route Tracker{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>
+            <i class="fas fa-list me-2"></i>My Routes
+        </h1>
+        <p>View and manage all your saved routes</p>
+    </div>
+    
+    <!-- Route Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-route"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>{{ routes|length }}</h3>
+                    <p>Total Routes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-road"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>{{ "%.1f"|format(routes|sum(attribute='total_distance') or 0) }}</h3>
+                    <p>Total Distance (km)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>{{ ((routes|sum(attribute='total_time') or 0) // 3600)|int }}</h3>
+                    <p>Total Hours</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Routes List -->
+    <div class="row">
+        <div class="col-12">
+            {% if routes %}
+                <div class="routes-grid">
+                    {% for route in routes %}
+                    <div class="route-card">
+                        <div class="route-header">
+                            <h5>{{ route.name }}</h5>
+                            <div class="route-status">
+                                {% if route.is_active and not route.is_completed %}
+                                    <span class="badge bg-success">Active</span>
+                                {% elif route.is_completed %}
+                                    <span class="badge bg-primary">Completed</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Paused</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="route-description">
+                            <p>{{ route.description or 'No description provided' }}</p>
+                        </div>
+                        
+                        <div class="route-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-route text-primary"></i>
+                                <span>{{ "%.2f"|format(route.total_distance) }} km</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-clock text-info"></i>
+                                <span>{{ (route.total_time // 60)|int }} min</span>
+                            </div>
+                            {% if route.average_speed > 0 %}
+                            <div class="stat-item">
+                                <i class="fas fa-tachometer-alt text-warning"></i>
+                                <span>{{ "%.1f"|format(route.average_speed) }} km/h</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="route-dates">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                Started: {{ route.start_time.strftime('%Y-%m-%d %H:%M') }}
+                            </small>
+                            {% if route.end_time %}
+                            <small class="text-muted d-block">
+                                <i class="fas fa-flag-checkered me-1"></i>
+                                Ended: {{ route.end_time.strftime('%Y-%m-%d %H:%M') }}
+                            </small>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="route-actions">
+                            <button class="btn btn-sm btn-primary view-route-btn" 
+                                    data-route-id="{{ route.id }}">
+                                <i class="fas fa-eye me-1"></i>View
+                            </button>
+                            {% if route.is_active and not route.is_completed %}
+                            <a href="{{ url_for('track') }}" class="btn btn-sm btn-success">
+                                <i class="fas fa-play me-1"></i>Continue
+                            </a>
+                            {% endif %}
+                            <button class="btn btn-sm btn-outline-secondary share-route-btn" 
+                                    data-route-id="{{ route.id }}">
+                                <i class="fas fa-share me-1"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-route fa-4x text-muted mb-4"></i>
+                    <h4 class="text-muted">No routes yet</h4>
+                    <p class="text-muted">Start tracking your first route to see it here!</p>
+                    <a href="{{ url_for('track') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-play me-2"></i>Start Tracking
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Route Detail Modal -->
+<div class="modal fade" id="routeDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Route Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="route-detail-map" style="height: 400px;"></div>
+                <div id="route-detail-info" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let routeDetailMap = null;
+    
+    // View route button handler
+    document.querySelectorAll('.view-route-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const routeId = this.dataset.routeId;
+            showRouteDetail(routeId);
+        });
+    });
+    
+    // Share route button handler
+    document.querySelectorAll('.share-route-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const routeId = this.dataset.routeId;
+            shareRoute(routeId);
+        });
+    });
+    
+    function showRouteDetail(routeId) {
+        fetch(`/api/get_route_data/${routeId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Error loading route data');
+                    return;
+                }
+                
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('routeDetailModal'));
+                modal.show();
+                
+                // Initialize map after modal is shown
+                setTimeout(() => {
+                    initRouteDetailMap(data);
+                }, 300);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error loading route data');
+            });
+    }
+    
+    function initRouteDetailMap(routeData) {
+        // Remove existing map
+        if (routeDetailMap) {
+            routeDetailMap.remove();
+        }
+        
+        // Create new map
+        routeDetailMap = L.map('route-detail-map').setView([0, 0], 13);
+        
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(routeDetailMap);
+        
+        // Add route points
+        if (routeData.points && routeData.points.length > 0) {
+            const coordinates = routeData.points.map(point => [point.lat, point.lng]);
+            
+            // Add route line
+            const routeLine = L.polyline(coordinates, {
+                color: '#007bff',
+                weight: 4,
+                opacity: 0.8
+            }).addTo(routeDetailMap);
+            
+            // Add start marker
+            L.marker([coordinates[0][0], coordinates[0][1]], {
+                icon: L.divIcon({
+                    className: 'custom-marker start-marker',
+                    html: '<i class="fas fa-play"></i>',
+                    iconSize: [30, 30]
+                })
+            }).addTo(routeDetailMap).bindPopup('Start');
+            
+            // Add end marker
+            if (coordinates.length > 1) {
+                const lastCoord = coordinates[coordinates.length - 1];
+                L.marker([lastCoord[0], lastCoord[1]], {
+                    icon: L.divIcon({
+                        className: 'custom-marker end-marker',
+                        html: '<i class="fas fa-flag-checkered"></i>',
+                        iconSize: [30, 30]
+                    })
+                }).addTo(routeDetailMap).bindPopup('End');
+            }
+            
+            // Fit map to route
+            routeDetailMap.fitBounds(routeLine.getBounds(), {padding: [10, 10]});
+        }
+        
+        // Update info section
+        document.getElementById('route-detail-info').innerHTML = `
+            <h6>${routeData.name}</h6>
+            <p>${routeData.description || 'No description'}</p>
+            <div class="row">
+                <div class="col-md-3">
+                    <strong>Distance:</strong><br>
+                    ${routeData.total_distance.toFixed(2)} km
+                </div>
+                <div class="col-md-3">
+                    <strong>Time:</strong><br>
+                    ${Math.floor(routeData.total_time / 60)} min
+                </div>
+                <div class="col-md-3">
+                    <strong>Avg Speed:</strong><br>
+                    ${routeData.average_speed.toFixed(1)} km/h
+                </div>
+                <div class="col-md-3">
+                    <strong>Points:</strong><br>
+                    ${routeData.points.length}
+                </div>
+            </div>
+        `;
+    }
+    
+    function shareRoute(routeId) {
+        const url = `${window.location.origin}/routes/${routeId}`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'Check out my route!',
+                text: 'I tracked this route using Route Tracker',
+                url: url
+            });
+        } else {
+            // Fallback - copy to clipboard
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Route link copied to clipboard!');
+            });
+        }
+    }
+});
+</script>
+{% endblock %}
